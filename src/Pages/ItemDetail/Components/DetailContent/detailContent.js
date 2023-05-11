@@ -1,3 +1,4 @@
+import { Axios } from 'Apis/@core';
 import HeartBtn from 'Components/Buttons/HeartBtn/HeartBtn';
 import { flexAllCenter } from 'Styles/common';
 import { isDesktop } from 'react-device-detect';
@@ -24,7 +25,7 @@ const DetailContent = ({ state }) => {
 		};
 
 		so.emit('sendMessage', msg);
-		so.on('receiveMessage', msg);
+		// so.on('receiveMessage', msg);
 		// const message = '안녕';
 
 		// try {
@@ -34,13 +35,14 @@ const DetailContent = ({ state }) => {
 		// 	console.log(err);
 		// }
 
-		// try {
-		// 	const res = await Axios.get(`/api/chat/chat-log?room_idx=${room_idx}`);
-		// 	console.log(res);
-		// } catch (err) {
-		// 	console.log(err);
-		// }
+		try {
+			const res = await Axios.get(`/api/chat/chat-log?room_idx=${room_idx}`);
+			console.log('/////로그 조회', res);
+		} catch (err) {
+			console.log(err);
+		}
 	};
+
 	return (
 		<>
 			{state ? (
