@@ -31,8 +31,8 @@ const MyUserEdit2 = ({ userInfo }) => {
 		};
 
 		try {
-			const res = await UserApi.userInfo(infoEdit);
-			console.log(res);
+			const res = await UserApi.userInfoEdit(infoEdit);
+			console.log('/////////////', res);
 			alert('회원정보가 변경되었습니다');
 			navigate('/mypage');
 		} catch (err) {

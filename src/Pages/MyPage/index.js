@@ -46,7 +46,7 @@ const MyPage = () => {
 			<ToggleBar setToggleState={setToggleState} />
 			{ToggleState === '유저 정보 수정' && <MyUserEdit2 userInfo={userInfo} />}
 			<Outlet />
-			{mount === '' ? <MyItemPage/> : <div></div>}
+			{mount === '' ? <div></div> : <MyItemPage/>}
 		</S.Wrapper>
 	);
 };
