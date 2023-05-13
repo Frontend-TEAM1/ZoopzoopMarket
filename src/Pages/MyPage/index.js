@@ -6,9 +6,11 @@ import UserApi from 'Apis/userApi';
 import { Outlet } from 'react-router-dom';
 import MyUserEdit2 from './MyUserEdit2/myUserEdit2';
 import MyPageApi from 'Apis/myPageApi';
+import MyItemPage from './MyItem/Desktop/myItem';
 
 const MyPage = () => {
 	const [ToggleState, setToggleState] = useState();
+	let mount = '';
 
 	const [userInfo, setUserInfo] = useState();
 	const [userProfile, setUserProfile] = useState();
@@ -34,6 +36,8 @@ const MyPage = () => {
 
 		getUserInfo();
 		getUserProfile();
+
+		mount = 'mount';
 	}, []) 
 
 	return (
@@ -42,6 +46,7 @@ const MyPage = () => {
 			<ToggleBar setToggleState={setToggleState} />
 			{ToggleState === '유저 정보 수정' && <MyUserEdit2 userInfo={userInfo} />}
 			<Outlet />
+			{mount === '' ? <MyItemPage/> : <div></div>}
 		</S.Wrapper>
 	);
 };
