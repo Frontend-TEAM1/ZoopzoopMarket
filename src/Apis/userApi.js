@@ -34,5 +34,9 @@ const UserApi = {
 			phone,
 		});
 	},
+	userPasswordEdit({pw}) {
+		return Axios.patch(PATH + '/password', {pw})
+	}
 };
+
 export default UserApi;

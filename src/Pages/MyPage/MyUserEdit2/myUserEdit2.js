@@ -13,6 +13,10 @@ const MyUserEdit2 = ({ userInfo }) => {
 	const [idMsg, setIdMsg] = useState('');
 	const [nickMsg, setNickMsg] = useState('');
 
+	const onClickPasswordChange = () => {
+		navigate('/mypage/user_password_edit');
+	}
+
 	const {
 		register,
 		handleSubmit,
@@ -31,8 +35,7 @@ const MyUserEdit2 = ({ userInfo }) => {
 		};
 
 		try {
-			const res = await UserApi.userInfoEdit(infoEdit);
-			console.log('/////////////', res);
+			await UserApi.userInfoEdit(infoEdit);
 			alert('회원정보가 변경되었습니다');
 			navigate('/mypage');
 		} catch (err) {
@@ -161,6 +164,9 @@ const MyUserEdit2 = ({ userInfo }) => {
 					</BtnWrap>
 				</S.Form>
 			</S.Wrap>
+			<S.Wrap2>
+				<S.Text onClick={onClickPasswordChange}>비밀번호 변경하기</S.Text>
+			</S.Wrap2>
 		</S.Div>
 	);
 };
@@ -169,13 +175,20 @@ export default MyUserEdit2;
 
 const Div = styled.div`
 	width: 100%;
-	${flexAllCenter}
+	margin: 0 auto;
 `;
 
 const Wrap = styled.div`
 	width: 60%;
 	flex-direction: column;
 	${flexAllCenter}
+	margin: 0 auto;
+`;
+
+const Wrap2 = styled.div`
+	width: 60%;
+	${flexAllCenter}
+	margin: 0 auto;
 `;
 
 const Header = styled.div`
@@ -299,9 +312,20 @@ const Address = styled.div`
 	align-items: center;
 `;
 
+const Text = styled.div`
+	margin-top: 30px;
+	font-size: ${({theme}) => theme.fontSize.base};
+	color: ${({theme}) => theme.color.primary};
+	:hover {
+		cursor: pointer;
+		line-height: 0%;
+	}
+`;
+
 const S = {
 	Div,
 	Wrap,
+	Wrap2,
 	Header,
 	LogoImage,
 	Form,
@@ -313,4 +337,5 @@ const S = {
 	InputBoxWrap,
 	Error,
 	Address,
+	Text
 };
