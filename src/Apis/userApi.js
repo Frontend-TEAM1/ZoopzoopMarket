@@ -38,5 +38,4 @@ const UserApi = {
 		return Axios.patch(PATH + '/password', {pw})
 	}
 };
-
 export default UserApi;

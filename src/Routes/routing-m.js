@@ -14,7 +14,6 @@ import MobileAccountBookPage from 'Pages/MyPage/MyAccountBook/Mobile';
 import ReviewPage from 'Pages/Review';
 import MobileLoginPage from 'Pages/Form/Login/Mobile/MobileLoginPage';
 import MobileMain from 'Pages/Main/Mobile';
-import MobileMyUserEdit from 'Pages/MyPage/MyUserEdit/Mobile';
 import MobileRegisterPage from 'Pages/Register/Mobile';
 import MobileSignUpPage from 'Pages/Form/SignUp/Mobile/MobileSignUpPage';
 
@@ -81,7 +80,7 @@ const m_router = createBrowserRouter([
 			},
 			{
 				path: 'mypage/user_edit',
-				element: <MobileMyUserEdit />, //수정 필요
+				// element: <MobileMyUserEdit2 />, //수정 필요
 			},
 			{
 				path: 'register',

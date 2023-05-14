@@ -9,8 +9,7 @@ import MyPageApi from 'Apis/myPageApi';
 import MyItemPage from './MyItem/Desktop/myItem';
 
 const MyPage = () => {
-	const [ToggleState, setToggleState] = useState();
-	let mount = '';
+	// let mount = ''; 마이페이지 메인 초기 접속시 디폴트로 보이는 메뉴 화면 나오게 하는 기능 수정중
 
 	const [userInfo, setUserInfo] = useState();
 	const [userProfile, setUserProfile] = useState();
@@ -37,16 +36,15 @@ const MyPage = () => {
 		getUserInfo();
 		getUserProfile();
 
-		mount = 'mount';
+		// mount = 'mount';
 	}, []) 
 
 	return (
 		<S.Wrapper>
 			{userInfo && userProfile && <MyProfile userInfo={userInfo} userProfile={userProfile}/>}
-			<ToggleBar setToggleState={setToggleState} />
-			{ToggleState === '유저 정보 수정' && <MyUserEdit2 userInfo={userInfo} />}
+			<ToggleBar/>
 			<Outlet />
-			{mount === '' ? <div></div> : <MyItemPage/>}
+			{/* {mount === '' ? <div></div> : <MyItemPage/>} */}
 		</S.Wrapper>
 	);
 };
