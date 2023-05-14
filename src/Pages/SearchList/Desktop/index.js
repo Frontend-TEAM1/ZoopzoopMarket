@@ -6,6 +6,7 @@ import { useInfiniteQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchList from './searchList';
+import { useInfiniteSearch } from 'Hooks/Queries/get-infinite-search';
 
 const DesktopSearchList = () => {
 	const [selected, setSelected] = useState(0);
@@ -13,39 +14,7 @@ const DesktopSearchList = () => {
 	const [ref, inView] = useInView({ threshold: 0.5 });
 	const props = 'search_list';
 
-	const fetchItems = (page, searchWord) => {
-		return Axios.get('/api/product/search', {
-			params: {
-				category: selected,
-				keyword: searchWord,
-				page: page,
-			},
-		});
-	};
-
-	const useInfiniteSearch = () => {
-		const res = useInfiniteQuery(
-			['searchItems'],
-			({ pageParam = 1 }) => fetchItems(pageParam, word),
-			{
-				getNextPageParam: lastPage => {
-					let page =
-						lastPage.data.pagination.no === 0
-							? 1
-							: Math.floor(lastPage.data.pagination.no / 20) + 1;
-					if (page < lastPage.data.pagination.endPage) {
-						return page + 1;
-					} else {
-						return undefined;
-					}
-				},
-			},
-		);
-		return res;
-	};
-
-	const res = useInfiniteSearch();
-
+	const res = useInfiniteSearch(word, selected);
 	const { data } = res;
 
 	let selectedItem = '';
@@ -59,6 +28,7 @@ const DesktopSearchList = () => {
 	useEffect(() => {
 		res.refetch();
 	}, [selected]);
+
 
 	useEffect(() => {
 		if (!inView) {
@@ -74,11 +44,17 @@ const DesktopSearchList = () => {
 					<S.SearchBarContainer>
 						<SearchBar props={props} />
 					</S.SearchBarContainer>
-					<S.ResultText>
-						{/*삼항연산자로 검색키워드가 있을때 + 없을때 구별해서 보여줘야함 */}
-						<div>원하시는 키워드를 입력해주세요</div>
-						찾으신 '{word}'에 대한 결과 입니다.(총{} 개)
-					</S.ResultText>
+					{data && (
+						<S.ResultText>
+							{data.pages && data.pages[0].data.product.length === 0 ? (
+								<div>{word}에 대한 검색 결과가 없습니다.</div>
+							) : (
+								<div>
+									찾으신 '{word}'에 대한 결과 입니다.(총{} 개)
+								</div>
+							)}
+						</S.ResultText>
+					)}
 					<S.CategoryBox>
 						<S.Category
 							onClick={() => setSelected(0)}

@@ -30,5 +30,17 @@ const ProductApi = {
 			prod_idx,
 		});
 	},
+
+
+	searchItems(page, searchWord, selected) {
+		return Axios.get('/api/product/search', {
+			params: {
+				category: selected,
+				keyword: searchWord,
+				page: page,
+			},
+		});
+	},
+
 };
 export default ProductApi;

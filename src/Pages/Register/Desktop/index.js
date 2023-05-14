@@ -1,16 +1,22 @@
 import styled from 'styled-components';
 import UploadFiles from './Components/uploadFiles';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import KaMap from 'Components/Map/Map';
 import FindAddress from 'Components/Address/Desktop/address';
 import { Axios } from 'Apis/@core';
+import { useNavigate, useParams } from 'react-router-dom';
+import ProductApi from 'Apis/productApi';
 
 const RegisterPage = () => {
 	const [searchResult, setSearchResult] = useState('');
+	const [images, setImages] = useState([]);
+	const navigate = useNavigate();
 
 	const [price, setPrice] = useState('');
 	const [tags, setTags] = useState([]);
+	const { idx } = useParams();
+	console.log('idx', idx);
 
 	const {
 		register,
@@ -18,8 +24,37 @@ const RegisterPage = () => {
 		setError,
 		clearErrors,
 		setValue,
+		getValues,
 		formState: { errors },
 	} = useForm();
+
+	const productIdx = async () => {
+		try {
+			const res = await ProductApi.detail(idx);
+			console.log('res', res);
+			setPrice(res.data.searchProduct.price);
+			setTags(
+				res.data.searchProduct.ProductsTags.map(tagObj => tagObj.Tag.tag),
+			);
+			setValue('price', price);
+			setValue('title', res.data.searchProduct.title);
+			setValue('content', res.data.searchProduct.description);
+			setSearchResult(res.data.searchProduct.region);
+			setImages([
+				res.data.searchProduct.img_url,
+				...res.data.searchProduct.ProductImages.map(subImg => subImg.img_url),
+			]);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	console.log('images', images);
+
+	useEffect(() => {
+		if (!idx) return;
+		productIdx();
+	}, [idx]);
 
 	const handleKeyDown = e => {
 		if (e.keyCode === 13) {
@@ -33,7 +68,6 @@ const RegisterPage = () => {
 		}
 	};
 	const handleDelete = deleteTag => e => {
-		console.log('!!!!!!', e);
 		e.preventDefault();
 		setTags(prevTags => prevTags.filter(tag => tag !== deleteTag));
 	};
@@ -48,14 +82,14 @@ const RegisterPage = () => {
 
 	const onSubmit = data => {
 		if (tags.length === 0) {
-			//리액트 훅폼으로 에러메세지 셋팅
 			setError(
-				'tag', //에러 이름. 기존에 있는 것과 겹칠시 그쪽으로 에러 들어감
-				{ message: '1개이상 꼭 입력해주세요.' }, //errors에 넣을 에러 메시지
-				{ shouldFocus: true }, //에러 발생시 해당 구간에 포커스하게 하는 설정
+				'tag',
+				{ message: '1개이상 꼭 입력해주세요.' },
+				{ shouldFocus: true },
 			);
 			return;
-		} else setValue('', ''); //값이 유효하면 set!
+		} else setValue('', '');
+
 		try {
 			const formData = new FormData();
 			formData.append('title', data.title);
@@ -64,15 +98,35 @@ const RegisterPage = () => {
 			formData.append('description', data.content);
 			formData.append('region', searchResult);
 			formData.append('tag', tags);
+			console.log('이미지 formdata', data.mainImg);
 			[...data.mainImg].forEach(element => {
 				formData.append('images', element);
 			});
-			// 참고 : https://pobsiz.tistory.com/12 (3번)
-			// 같은 키값에 코드를 여러번 실행시켜야함.?
-			Axios.post('/api/product', formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
-			});
-			alert('물품등록이 완료되었습니다.');
+
+			if (!idx) {
+				const res = Axios.post('/api/product', formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				});
+				console.log(res);
+				alert('물품등록이 완료되었습니다.');
+				navigate('/main');
+			} else {
+				let imgUrl = [];
+				formData.append('idx', idx);
+				images.forEach((element, index) => {
+					if (index === 0) {
+						formData.append('main_url', element);
+					} else {
+						imgUrl.push(element);
+					}
+				});
+				formData.append('img_url', imgUrl.join());
+				Axios.patch('/api/product', formData, {
+					headers: { 'Content-Type': 'multipart/form-data' },
+				});
+				alert('물품수정이 완료되었습니다.');
+				navigate('/main');
+			}
 		} catch (err) {
 			return console.log(err);
 		}
@@ -80,7 +134,14 @@ const RegisterPage = () => {
 
 	return (
 		<S.Wrapper onSubmit={handleSubmit(onSubmit)}>
-			<UploadFiles register={register} />
+			<UploadFiles
+				images={images}
+				setImages={setImages}
+				register={register}
+				setValue={setValue}
+				getValues={getValues}
+				errors={errors}
+			/>
 			<S.Blank></S.Blank>
 			<S.Line>
 				<S.Mark>*</S.Mark>
@@ -109,7 +170,7 @@ const RegisterPage = () => {
 								message: '숫자만 입력해주세요',
 							},
 						})}
-						value={price}
+						value={price.toLocaleString('ko-KR')}
 						type="text"
 						onChange={handlePriceChange}
 					></S.InputBox>

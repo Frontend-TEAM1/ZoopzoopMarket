@@ -1,21 +1,22 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const UploadFiles = ({ register }) => {
+const UploadFiles = ({ register, images, setImages, setValue }) => {
 	const [imgSrc, setImgSrc] = useState([]);
 	const [selectedImgIndex, setSelectedImgIndex] = useState(null);
 
 	const onUpload = async e => {
+		setImages([]);
 		const fileArr = e.target.files;
 		const fileURLs = [];
 
 		for (let i = 0; i < fileArr.length && i < 5; i++) {
 			const file = fileArr[i];
-			const fileURL = await readFileAsync(file); // Promise로 파일을 읽음
+			const fileURL = await readFileAsync(file);
 			fileURLs.push(fileURL);
 		}
-
 		setImgSrc(fileURLs);
+		console.log('fileArr', fileArr);
 	};
 
 	const readFileAsync = file => {
@@ -27,31 +28,13 @@ const UploadFiles = ({ register }) => {
 		});
 	};
 
-	/*
-	(아래)
-	reader.onload 이벤트가 비동기적으로 발생하기 때문에, 이미지 URL이 fileURLs 배열에
-	순서대로 저장되지 않을 수 있습니다. 이는 이미지가 뒤늦게 미리보기에 나타나는 원인
-	*/
-
-	// const onUpload = e => {
-	// 	const fileArr = e.target.files;
-	// 	let fileURLs = [];
-	// 	let filesLength = fileArr.length > 5 ? 5 : fileArr.length;
-
-	// 	for (let i = 0; i < filesLength; i++) {
-	// 		const reader = new FileReader();
-	// 		reader.readAsDataURL(fileArr[i]);
-	// 		reader.onload = () => {
-	// 			fileURLs[i] = reader.result;
-	// 			setImgSrc(fileURLs);
-	// 		};
-	// 	}
-	// };
-
 	const onClickDelete = idx => {
-		if (imgSrc.length === 0) return;
-		const newFileURLs = imgSrc.filter(url => url !== imgSrc[idx]);
+		if (imgSrc.length === 0 && images.length === 0) return;
+		const newFileURLs = !images
+			? imgSrc.filter(url => url !== imgSrc[idx])
+			: images.filter(url => url !== images[idx]);
 		setImgSrc(newFileURLs);
+		setImages(newFileURLs);
 		console.log(newFileURLs);
 	};
 
@@ -73,7 +56,7 @@ const UploadFiles = ({ register }) => {
 				<S.MainImgContainer>
 					<label htmlFor="mainImg">
 						<S.MainImgSection
-							src={imgSrc[0] || '/Assets/Images/defaultImage.png'}
+							src={images[0] || imgSrc[0] || '/Assets/Images/defaultImage.png'}
 							onClick={() => setSelectedImgIndex(0)}
 						/>
 					</label>
@@ -83,7 +66,9 @@ const UploadFiles = ({ register }) => {
 					<S.SmallImgContainer>
 						<label htmlFor="mainImg">
 							<S.SmallImgSection
-								src={imgSrc[1] || '/Assets/Images/defaultImage.png'}
+								src={
+									images[1] || imgSrc[1] || '/Assets/Images/defaultImage.png'
+								}
 								onClick={() => setSelectedImgIndex(1)}
 							/>
 						</label>
@@ -92,7 +77,9 @@ const UploadFiles = ({ register }) => {
 					<S.SmallImgContainer>
 						<label htmlFor="mainImg">
 							<S.SmallImgSection
-								src={imgSrc[2] || '/Assets/Images/defaultImage.png'}
+								src={
+									images[2] || imgSrc[2] || '/Assets/Images/defaultImage.png'
+								}
 								onClick={() => setSelectedImgIndex(2)}
 							/>
 						</label>
@@ -101,7 +88,9 @@ const UploadFiles = ({ register }) => {
 					<S.SmallImgContainer>
 						<label htmlFor="mainImg">
 							<S.SmallImgSection
-								src={imgSrc[3] || '/Assets/Images/defaultImage.png'}
+								src={
+									images[3] || imgSrc[3] || '/Assets/Images/defaultImage.png'
+								}
 								onClick={() => setSelectedImgIndex(3)}
 							/>
 						</label>
@@ -110,7 +99,9 @@ const UploadFiles = ({ register }) => {
 					<S.SmallImgContainer>
 						<label htmlFor="mainImg">
 							<S.SmallImgSection
-								src={imgSrc[4] || '/Assets/Images/defaultImage.png'}
+								src={
+									images[4] || imgSrc[4] || '/Assets/Images/defaultImage.png'
+								}
 								onClick={() => setSelectedImgIndex(4)}
 							/>
 						</label>

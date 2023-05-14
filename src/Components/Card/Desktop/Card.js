@@ -64,6 +64,7 @@ const Heart = styled.div`
 
 const ItemImg = styled.img`
 	position: relative;
+	width: 200px;
 	max-width: 250px;
 	width: 100%;
 	height: 250px;
