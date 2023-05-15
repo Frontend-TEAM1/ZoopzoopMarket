@@ -1,8 +1,6 @@
-import { Axios } from 'Apis/@core';
 import SearchBar from 'Components/SearchBar/Desktop/SearchBar';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SearchList from './searchList';
@@ -28,7 +26,6 @@ const DesktopSearchList = () => {
 	useEffect(() => {
 		res.refetch();
 	}, [selected]);
-
 
 	useEffect(() => {
 		if (!inView) {

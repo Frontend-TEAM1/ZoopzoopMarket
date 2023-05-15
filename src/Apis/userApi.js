@@ -34,5 +34,8 @@ const UserApi = {
 			phone,
 		});
 	},
+	userProfileEdit() {
+		return Axios.patch(PATH + '/profile');
+	},
 };
 export default UserApi;

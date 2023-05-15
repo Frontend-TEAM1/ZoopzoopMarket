@@ -1,22 +1,44 @@
+import UserApi from 'Apis/userApi';
 import MannerMeter from 'Components/Icon/Icon';
 import Profile from 'Components/Profile/Desktop/profile';
 import { flexAllCenter } from 'Styles/common';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
-const MyProfile = ({userInfo, userProfile}) => {
+const MyProfile = ({ userInfo, userProfile }) => {
+	const { region } = userInfo;
+	const { User, ondo } = userProfile;
 
-	const {region} = userInfo;
-	const {User, ondo} = userProfile;
+	const profileImgEdit = async () => {
+		const formData = new FormData();
+		formData.append('profile_url');
+
+		try {
+			const res = await UserApi.userProfileEdit(formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		profileImgEdit();
+	}, []);
 
 	return (
 		<S.Wrapper>
 			<div>
 				<div>
-				<Profile userProfileUrl={User.profileUrl}/>
+					<Profile userProfileUrl={User.profileUrl} />
 				</div>
-				<div>반가워요, <S.nickName>{User.nickName}</S.nickName>님 :)</div>
+				<div>
+					반가워요, <S.nickName>{User.nickName}</S.nickName>님 :)
+				</div>
 				<S.Icon>
-						<MannerMeter ondo={ondo} />
+					<MannerMeter ondo={ondo} />
 				</S.Icon>
 				<div>{region}</div>
 			</div>
@@ -46,13 +68,13 @@ const Icon = styled.div`
 `;
 
 const nickName = styled.h1`
-	/* font-size: ${({theme}) => theme.fontSize.big}; */
+	/* font-size: ${({ theme }) => theme.fontSize.big}; */
 	display: inline;
 	margin: 0;
-`
+`;
 
 const S = {
 	Wrapper,
 	Icon,
-	nickName
+	nickName,
 };
