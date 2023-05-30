@@ -5,12 +5,6 @@ import styled from 'styled-components';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 const MobilePreview = ({ categoryData, userLocation, userName }) => {
-	// const itemList = useRecoilValue(itemListState);
-
-	//let itemCategory = itemList.category;
-	// let userLocation = user.userLocation;
-	// let userName = user.userName;
-	// console.log(categoryData);
 	let category = categoryData === 1 ? '중고 물품' : '무료나눔';
 	let categoryText =
 		categoryData === 1

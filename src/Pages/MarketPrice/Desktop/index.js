@@ -241,59 +241,6 @@ dataKey props를 통해 그래프의 데이터를 설정합니다. stroke props�
 activeDot props를 통해 마우스로 해당 데이터를 클릭했을 때 원형으로 표시됩니다.
 */
 
-//data && console.log(data);
-
-// data && console.log(data.data.prod_idx.cumulativeAvgPrice);
-//console.log('시세 검색 단어: ', word);
-// console.log(priceList);
-// const data = [
-// 	{ date: '2023-04-30', price: 3000 },
-// 	{ date: '2023-05-01', price: 3500 },
-// 	{ date: '2023-05-02', price: 2500 },
-// 	{ date: '2023-05-03', price: 3800 },
-// 	{ date: '2023-05-04', price: 9000 },
-// 	{ date: '2023-05-05', price: 3900 },
-// 	{ date: '2023-05-06', price: 4200 },
-// 	{ date: '2023-05-07', price: 4200 },
-// 	{ date: '2023-05-08', price: 3800 },
-// 	{ date: '2023-05-09', price: 4200 },
-// 	{ date: '2023-05-11', price: 3800 },
-// 	{ date: '2023-05-11', price: 4200 },
-// ]; 실제 데이터도 이 형태로 담겨져서 옴
-
-// useEffect(() => {
-// 	const fetchItems = async () => {
-// 		try {
-// 			const response = await axios.get('Mock/ItemData/items.json');
-// 			const items = response.data.itemList.filter(
-// 				item => item.category === 1 && item.isSold === true,
-// 			);
-// 			const sortedItems = items.sort((a, b) => {
-// 				return new Date(a.createdAt) - new Date(b.createdAt);
-// 			});
-// 			setItemList(sortedItems);
-// 			//
-// 			const itemsByMonth = {};
-// 			sortedItems.forEach(item => {
-// 				const month = new Date(item.createdAt).getMonth();
-// 				if (!itemsByMonth[month]) {
-// 					itemsByMonth[month] = [];
-// 				}
-// 				itemsByMonth[month].push(item);
-// 			});
-// 			for (let month in itemsByMonth) {
-// 				const monthItems = itemsByMonth[month];
-// 				const total = monthItems.reduce((sum, item) => sum + item.price, 0);
-// 				const average = total / monthItems.length;
-// 				//console.log(`${Number(month) + 1}월 평균 가격: ${average}`);
-// 			}
-// 		} catch (error) {
-// 			console.error(error);
-// 		}
-// 	};
-// 	fetchItems();
-// }, []);
-
 // const groupingData = (data, groupSize) => {
 // 	const result = [];
 // 	let group = [];
@@ -317,6 +264,3 @@ activeDot props를 통해 마우스로 해당 데이터를 클릭했을 때 원�
 
 // 	return result;
 // }; //배열을 전달 받아서 안에 객체들을 원하는SIZE만큼 그룹화 하고 평균 값을 저장.
-
-// const groupedData = arr?.length && groupingData(arr, 2);
-// console.log(groupedData);

@@ -17,8 +17,6 @@ const AccountBookPage = () => {
 	const monthFirstDate = `${year}-0${month}-01`; // params_start
 	const monthLastDate = `${year}-0${month}-${lastDay}`; // params_end
 
-	// console.log(monthFirstDate, monthLastDate); // 확인용
-
 	const { data } = useQuery(['accountBook', category], () =>
 		MyPageApi.accountBook({
 			page: 1,

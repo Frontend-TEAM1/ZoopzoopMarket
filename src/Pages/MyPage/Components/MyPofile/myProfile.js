@@ -40,7 +40,6 @@ const MyProfile = () => {
 
 		try {
 			const res = await UserApi.userProfileEdit(formData);
-			console.log(res);
 		} catch (error) {
 			console.log(error);
 		}
@@ -57,8 +56,6 @@ const MyProfile = () => {
 
 	const { region } = userInfo && userInfo.data;
 	const { User, ondo } = userProfile && userProfile.data;
-
-	console.log('프로필', userProfile);
 
 	return (
 		<S.Wrapper>
