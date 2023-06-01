@@ -12,17 +12,18 @@ import UserApi from 'Apis/userApi';
 import { FORM_TYPE } from 'Consts/FormType';
 import CustomButton from 'Components/Buttons/button';
 import AlertModal from 'Components/Alert/alertModal';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useUserInfo from 'Hooks/Queries/get-user-profile';
 
 const MyUserEdit = ({ userInfo }) => {
 	const navigate = useNavigate();
-	const { data } = useQuery(['userInfo'], () => UserApi.userInfo());
-
 	const [address, setAddress] = useState();
 	const [phoneMessage, setPhoneMessage] = useState();
 	const [nickMessage, setNickMessage] = useState('');
 	const [modal, setModal] = useState(false);
 	const [change, setChange] = useState(false);
+
+	const { data } = useUserInfo();
 
 	const queryClient = useQueryClient();
 
@@ -92,10 +93,12 @@ const MyUserEdit = ({ userInfo }) => {
 	}, [getValues('nick')]);
 
 	useEffect(() => {
-		setValue('email', data?.data.email);
-		setValue('nick', data?.data.nick_name);
-		setValue('phone', data?.data.phone);
-		setAddress(data?.data.region);
+		if (data) {
+			setValue('email', data.email);
+			setValue('nick', data.nick_name);
+			setValue('phone', data.phone);
+			setAddress(data.region);
+		}
 	}, [data]);
 
 	const onClickPasswordChange = () => {
@@ -111,7 +114,7 @@ const MyUserEdit = ({ userInfo }) => {
 					<S.Container>
 						<S.Title>* 아이디</S.Title>
 						<S.Box>
-							<S.idDiv>{data.data.email}</S.idDiv>
+							<S.idDiv>{data.email}</S.idDiv>
 						</S.Box>
 					</S.Container>
 					<S.Container>

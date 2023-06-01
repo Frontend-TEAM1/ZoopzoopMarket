@@ -3,25 +3,16 @@ import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import UserApi from 'Apis/userApi';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import MyPageApi from 'Apis/myPageApi';
 import useUserInfo from 'Hooks/Queries/get-user-profile';
 import MannerMeter from 'Components/Icon/Icon';
 import { useMutation } from '@tanstack/react-query';
+import useMyUserInfo from 'Hooks/Queries/get-user-info';
 
 const MyProfile = () => {
-	const [userProfile, setUserProfile] = useState('');
 	const [profileImg, setProfileImg] = useState();
 	const photoInput = useRef();
 	const { data, refetch, isLoading } = useUserInfo();
-
-	const getUserProfile = async () => {
-		try {
-			const res = await MyPageApi.myMainPage();
-			setUserProfile(res);
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	const { data: myData } = useMyUserInfo();
 
 	const { mutate } = useMutation(
 		formData => UserApi.userProfileEdit(formData),
@@ -49,18 +40,16 @@ const MyProfile = () => {
 	};
 
 	useEffect(() => {
-		getUserProfile();
+		// getUserProfile();
 	}, [profileImg]);
 
-	const { User, ondo } = userProfile && userProfile.data;
-
-	console.log('프로필', userProfile);
+	// console.log('프로필', userProfile);
 
 	return (
 		<>
 			{!isLoading && (
 				<S.Wrapper>
-					{data && userProfile && (
+					{data && myData && (
 						<S.Info>
 							<S.ImgWrap>
 								<S.Img
@@ -91,12 +80,14 @@ const MyProfile = () => {
 							<S.Detail>
 								<S.List>
 									<S.InfoTitle>닉네임</S.InfoTitle>
-									{User && <S.InfoContent>{User.nickName}</S.InfoContent>}
+									{myData.User && (
+										<S.InfoContent>{myData.User.nickName}</S.InfoContent>
+									)}
 								</S.List>
 								<S.List>
 									<S.InfoTitle>매너온도</S.InfoTitle>
 									<S.InfoContent>
-										<MannerMeter ondo={ondo} />
+										<MannerMeter ondo={myData.ondo} />
 									</S.InfoContent>
 								</S.List>
 								<S.List>
@@ -109,9 +100,7 @@ const MyProfile = () => {
 									<S.InfoTitle>내 등록템</S.InfoTitle>
 									<S.InfoContent>
 										<span>
-											{userProfile.data.productsCount
-												? userProfile.data.productsCount
-												: 0}
+											{myData.productsCount ? myData.productsCount : 0}
 										</span>{' '}
 										개
 									</S.InfoContent>
@@ -119,13 +108,13 @@ const MyProfile = () => {
 								<S.List>
 									<S.InfoTitle>내 관심템</S.InfoTitle>
 									<S.InfoContent>
-										<span>{userProfile.data.likeCount}</span> 개
+										<span>{myData.likeCount}</span> 개
 									</S.InfoContent>
 								</S.List>
 								<S.List>
 									<S.InfoTitle>채팅</S.InfoTitle>
 									<S.InfoContent>
-										<span>{userProfile.data.chatCount}</span> 건
+										<span>{myData.chatCount}</span> 건
 									</S.InfoContent>
 								</S.List>
 							</S.Detail>
