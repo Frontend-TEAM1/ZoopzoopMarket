@@ -187,7 +187,9 @@ const RegisterPage = () => {
 							if (e.key == 'Enter') e.preventDefault();
 						}}
 					></S.InputBox>
-					{errors.title && <Error role="alert">{errors.title.message}</Error>}
+					{errors.title && (
+						<S.Error role="alert">{errors.title.message}</S.Error>
+					)}
 				</S.InputContainer>
 			</S.Line>
 			<S.Line>
@@ -207,7 +209,9 @@ const RegisterPage = () => {
 						type="text"
 						onChange={handlePriceChange}
 					></S.InputBox>
-					{errors.price && <Error role="alert">{errors.price.message}</Error>}
+					{errors.price && (
+						<S.Error role="alert">{errors.price.message}</S.Error>
+					)}
 				</S.InputContainer>
 			</S.Line>
 			<S.Line>
@@ -218,7 +222,7 @@ const RegisterPage = () => {
 						placeholder="이곳에 입력 후 엔터를 치면 태그가 등록됩니다."
 						onKeyDown={handleKeyDown}
 					></S.InputBox>
-					{errors.tag && <Error role="alert">{errors.tag.message}</Error>}
+					{errors.tag && <S.Error role="alert">{errors.tag.message}</S.Error>}
 					<S.SelectorWrapper>
 						<CategorySelector setTags={setTags} tags={tags}></CategorySelector>
 					</S.SelectorWrapper>
@@ -237,9 +241,13 @@ const RegisterPage = () => {
 				<S.AddressTitleContainer>
 					<S.Mark>*</S.Mark>
 					<S.Title>거래장소</S.Title>
-					<S.Address>{searchResult}</S.Address>
+					<S.Address>
+						{searchResult}
+						{addressMessage && (
+							<S.AddressError>{addressMessage}</S.AddressError>
+						)}
+					</S.Address>
 					<FindAddress setter={setSearchResult} />
-					{addressMessage && <Error>{addressMessage}</Error>}
 				</S.AddressTitleContainer>
 				<KaMap address={searchResult} />
 			</S.AddressWrapper>
@@ -423,6 +431,7 @@ const Address = styled.div`
 	width: 100%;
 	padding: 10px;
 	font-size: ${({ theme }) => theme.fontSize.md};
+	position: relative;
 	@media (max-width: 768px) {
 		font-size: ${({ theme }) => theme.fontSize.sm};
 	}
@@ -437,6 +446,25 @@ const Error = styled.div`
 	position: absolute;
 	right: 50px;
 	top: 10px;
+	@media (max-width: 1100px) {
+		right: 50px;
+		top: 10px;
+	}
+	@media (max-width: 768px) {
+		left: -20px;
+		top: 40px;
+	}
+`;
+
+const AddressError = styled.div`
+	font-size: ${({ theme }) => theme.fontSize.xs};
+	font-weight: ${({ theme }) => theme.fontWeight.bold};
+	color: ${({ theme }) => theme.color.error};
+	margin-left: 30px;
+	margin-top: 5px;
+	position: absolute;
+	top: 0;
+	left: 0;
 	@media (max-width: 1100px) {
 		right: 50px;
 		top: 10px;
@@ -522,6 +550,7 @@ const S = {
 	AddressTitleContainer,
 	Address,
 	Error,
+	AddressError,
 	ContentBox,
 	TxtArea,
 	Container,

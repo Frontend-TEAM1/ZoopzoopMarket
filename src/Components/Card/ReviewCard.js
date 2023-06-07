@@ -114,6 +114,7 @@ const ItemTitle = styled.div`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
 	@media (max-width: 680px) {
 		width: 120px;
 		font-size: ${({ theme }) => theme.fontSize.es};
@@ -125,6 +126,7 @@ const ItemTitle = styled.div`
 `;
 
 const ItemPrice = styled.span`
+	width: 200px;
 	font-size: ${({ theme }) => theme.fontSize.sm};
 	color: ${({ theme }) => theme.color.gray[300]};
 	@media (max-width: 680px) {

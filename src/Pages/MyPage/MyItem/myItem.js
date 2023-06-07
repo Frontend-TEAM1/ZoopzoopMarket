@@ -22,9 +22,8 @@ const MyItemPage = () => {
 
 	useEffect(() => {
 		if (!isView) return;
-		if (data && data.pages.length < data.pages[0].data.pagination.endPage)
-			return fetchNextPage();
-		return;
+		if (data?.pages.length < data.pages[0].data.pagination.endPage)
+			fetchNextPage();
 	}, [isView]);
 
 	useEffect(() => {

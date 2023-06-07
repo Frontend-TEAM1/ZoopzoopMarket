@@ -78,7 +78,7 @@ const AccountBookDetailInfo = ({
 			<S.PreviewWrap>
 				<div>
 					<S.Flex>
-						<div>당월 수입</div>
+						<div>이번달 수입</div>
 						<div>
 							{data && (
 								<S.Amount>
@@ -93,7 +93,7 @@ const AccountBookDetailInfo = ({
 						</div>
 					</S.Flex>
 					<S.Flex>
-						<div>당월 지출</div>
+						<div>이번달 지출</div>
 						<div>
 							{data && (
 								<S.Amount>
@@ -108,7 +108,7 @@ const AccountBookDetailInfo = ({
 						</div>
 					</S.Flex>
 					<S.Flex2>
-						<div>당월 수익</div>
+						<div>총 수익</div>
 						<div>
 							{data && (
 								<S.Amount>

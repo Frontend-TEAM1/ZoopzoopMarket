@@ -84,7 +84,7 @@ const MarketPricePage = () => {
 						)}
 					</S.ChartContainer>
 					{average == 0 ? (
-						<S.Average>검색어가 입력되지 않았습니다.</S.Average>
+						<S.Average>검색어를 입력해주세요.</S.Average>
 					) : (
 						<S.Average>
 							<S.ResultWord>"{word}"</S.ResultWord>의 평균 시세는
@@ -92,7 +92,7 @@ const MarketPricePage = () => {
 						</S.Average>
 					)}
 					<S.RecentlyClosed>
-						<S.Title>최근 거래 종료 품목</S.Title>
+						{average == 0 ? '' : <S.Title>최근 거래 종료 품목</S.Title>}
 						{word && <RecentSoldOut word={word} />}
 					</S.RecentlyClosed>
 				</S.Wrapper>
